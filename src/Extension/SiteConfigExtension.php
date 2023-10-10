@@ -32,8 +32,11 @@ class SiteConfigExtension extends DataExtension
         'FacebookAdmin' => 'Varchar(250)',
         'FacebookAppID' => 'Varchar(250)',
 
+        'AMPHeadScripts' => 'Text',
         'HeadScripts' => 'Text',
+        'AMPBodyStartScripts' => 'Text',
         'BodyStartScripts' => 'Text',
+        'AMPBodyEndScripts' => 'Text',
         'BodyEndScripts' => 'Text',
 
         'RobotsTXT' => 'Text',
@@ -69,8 +72,12 @@ class SiteConfigExtension extends DataExtension
         $fields->addFieldsToTab('Root.SEO.Embeds', [
             TextareaField::create('HeadScripts', 'Scripts within <head> block'),
             TextareaField::create('BodyStartScripts', 'Scripts just after opening <body>'),
-            TextareaField::create('BodyEndScripts', 'Scripts just before closing <body>')
+            TextareaField::create('BodyEndScripts', 'Scripts just before closing <body>'),
+            TextareaField::create('AMPHeadScripts', 'AMP Scripts within <head> block'),
+            TextareaField::create('AMPBodyStartScripts', 'AMP Scripts just after opening <body>'),
+            TextareaField::create('AMPBodyEndScripts', 'AMP Scripts just before closing <body>')
         ]);
+
 
         $fields->addFieldsToTab('Root.SEO.Robots', [
             CheckboxField::create('RobotsPublishedPagesOnly', 'Include published pages only in Robots TXT'),

@@ -15,7 +15,9 @@ use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Control\Middleware\HTTPMiddleware;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripers\AMP\Control\AMPDirector;
 use SilverStripers\SEO\Extension\SEODataExtension;
+use SilverStripers\AMP\Control\AMPDirector;
 
 class SEORequestProcessor implements HTTPMiddleware {
 
@@ -36,7 +38,12 @@ class SEORequestProcessor implements HTTPMiddleware {
 			$head = strpos($body, '</head>');
 			$before = substr($body, 0, $head);
 			$after = substr($body, $head + strlen('</head>'));
-			$body = $before . "\n" . $config->HeadScripts . "\n" . '</head>' . "\n" . $after;
+            if (AMPDirector::is_amp()) {
+                $body = $before . "\n" . $config->AMPHeadScripts . "\n" . '</head>' . "\n" . $after;
+            } else {
+                $body = $before . "\n" . $config->HeadScripts . "\n" . '</head>' . "\n" . $after;
+            }
+
 		}
 
 		// end of body
@@ -50,7 +57,11 @@ class SEORequestProcessor implements HTTPMiddleware {
 				$start = strpos($body, $bodyTag);
 				$before = substr($body, 0, $start);
 				$after = substr($body, $start + strlen($bodyTag));
-				$body = $before . "\n" . $bodyTag . "\n" . $config->BodyStartScripts . "\n" . $after;
+                if (AMPDirector::is_amp()) {
+                    $body = $before . "\n" . $bodyTag . "\n" . $config->AMPBodyStartScripts . "\n" . $after;
+                } else {
+                    $body = $before . "\n" . $bodyTag . "\n" . $config->BodyStartScripts . "\n" . $after;
+                }
 			}
 		}
 
@@ -62,8 +73,13 @@ class SEORequestProcessor implements HTTPMiddleware {
                 $bodyEnd = strpos($body, '</body>');
                 $before = substr($body, 0, $bodyEnd);
                 $after = substr($body, $bodyEnd + strlen('</body>'));
-                $content = $help . "\n" . $config->BodyEndScripts;
+                if (AMPDirector::is_amp()) {
+                    $content = $help . "\n" . $config->AMPBodyEndScripts;
+                } else {
+                    $content = $help . "\n" . $config->BodyEndScripts;
+                }
                 $body = $before . "\n" . $content . "\n" . '</body>' . "\n" . $after;
+
             }
         }
 		return $body;
