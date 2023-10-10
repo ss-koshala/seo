@@ -17,7 +17,6 @@ use SilverStripe\Core\Config\Configurable;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripers\AMP\Control\AMPDirector;
 use SilverStripers\SEO\Extension\SEODataExtension;
-use SilverStripers\AMP\Control\AMPDirector;
 
 class SEORequestProcessor implements HTTPMiddleware {
 
